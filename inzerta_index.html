@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INZERTA — experimental playground</title>
+    <style>
+      /* —— GLOBAL RESET —— */
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        height: 100%;
+        width: 100%;
+        background: #000;
+        font-family: "Space Grotesk", sans-serif;
+        overflow: hidden;
+        color: #fff;
+      }
+
+      /* —— FULL‑SCREEN BACKGROUND VIDEO —— */
+      .bg { position: absolute; inset: 0; }
+      .bg video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.9) contrast(1.05) saturate(1.1);
+      }
+
+      /* —— CENTRAL LOGO —— */
+      #logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40vw;
+        max-width: 580px;
+        pointer-events: none;
+        mix-blend-mode: difference;
+      }
+
+      /* —— PRIMARY NAV BUTTONS —— */
+      .nav {
+        position: absolute;
+        text-decoration: none;
+        color: #fff;
+        font-size: clamp(12px, 1.2vw, 18px);
+        letter-spacing: 0.15em;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+      .nav:hover { opacity: 0.75; transform: translateY(-2px); }
+      #work  { top: 2rem;  left: 2rem; }
+      #about { top: 2rem;  right: 2rem; text-align: right; }
+      #lab   { bottom: 2rem; left: 2rem; }
+      #store { bottom: 2rem; right: 2rem; text-align: right; }
+
+      /* —— SOCIAL MINI‑BUTTONS —— */
+      .social-wrap {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1rem;
+      }
+      .social {
+        width: 2.2rem;
+        height: 2.2rem;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        text-decoration: none;
+        color: #fff;
+        transition: background 0.25s ease, opacity 0.25s ease;
+      }
+      .social:hover { background: #fff; color: #000; opacity: 0.85; }
+
+      /* —— MOBILE —— */
+      @media (max-width: 640px) {
+        #work,#about,#lab,#store{font-size:12px}
+        .social{width:1.8rem;height:1.8rem;font-size:.85rem}
+        #logo{width:70vw}
+      }
+    </style>
+  </head>
+  <body>
+    <!-- —— BACKGROUND VIDEO —— -->
+    <div class="bg">
+      <video autoplay loop muted playsinline preload="auto">
+        <source src="inzerta-main.webm" type="video/webm" />
+        <source src="inzerta-main.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- —— CENTRAL LOGO —— -->
+    <img id="logo" src="inzerta-logo.png" alt="Inzerta logo" />
+
+    <!-- —— NAVIGATION —— -->
+    <a id="work"  class="nav" href="/work">WORK</a>
+    <a id="about" class="nav" href="/about">ABOUT</a>
+    <a id="lab"   class="nav" href="/lab">LAB</a>
+    <a id="store" class="nav" href="/store">STORE</a>
+
+    <!-- —— SOCIAL / CONTACT —— -->
+    <div class="social-wrap">
+      <a class="social" href="https://instagram.com/byinzerta" target="_blank" aria-label="Instagram">I</a>
+      <a class="social" href="https://facebook.com/byinzerta"  target="_blank" aria-label="Facebook">F</a>
+      <a class="social" href="mailto:hola@byinzerta.com"       aria-label="Email">M</a>
+    </div>
+  </body>
+</html>
