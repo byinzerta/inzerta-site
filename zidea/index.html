@@ -1,1 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Z.IDEA - Inzerta</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff99;
+      font-family: monospace;
+      padding: 20px;
+    }
+    #output {
+      white-space: pre-wrap;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+    .input-group span {
+      margin-right: 8px;
+    }
+    input[type="text"] {
+      background: transparent;
+      border: none;
+      color: #00ff99;
+      font-size: 16px;
+      flex-grow: 1;
+      outline: none;
+    }
+    button {
+      background: #00ff99;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="output"></div>
+  <div class="input-group">
+    <span>&gt;</span>
+    <input type="text" id="userInput" autocomplete="off">
+  </div>
+
+  <script>
+    const output = document.getElementById('output');
+    const input = document.getElementById('userInput');
+    
+    let step = 0;
+    let answers = [];
+
+    const questions = [
+      "¿Qué tipo de marca quieres crear?",
+      "¿Cuál es tu estilo visual preferido?",
+      "¿Qué productos o servicios ofrecerás?",
+      "¿Qué emoción quieres que transmita tu marca?"
+    ];
+
+    const gumroadLink = "https://byinzerta.gumroad.com/l/etzudy";
+
+    function printLine(text) {
+      const line = document.createElement('div');
+      line.textContent = '> ' + text;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function showNextQuestion() {
+      if (step < questions.length) {
+        printLine(questions[step]);
+      } else {
+        generateResult();
+      }
+    }
+
+    function generateResult() {
+      printLine("Procesando tu idea...");
+      setTimeout(() => {
+        printLine("\\nNombre sugerido: Nova Ritual");
+        printLine("Estilo visual: Oscuro, elegante, experimental");
+        printLine("Prompt IA: Editorial ultra realista con fondo abstracto, tipografía experimental y objetos flotando");
+        printLine("Caption: Esta marca aún no existe. Pero podría ser tuya.\\n");
+
+        const button = document.createElement('button');
+        button.textContent = "Desbloquear tu marca completa";
+        button.onclick = () => window.open(gumroadLink, '_blank');
+        document.body.appendChild(button);
+
+        const retryButton = document.createElement('button');
+        retryButton.textContent = "Probar otra idea";
+        retryButton.onclick = () => location.reload();
+        document.body.appendChild(retryButton);
+      }, 1000);
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const value = input.value.trim();
+        if (value) {
+          answers.push(value);
+          input.value = '';
+          step++;
+          showNextQuestion();
+        }
+      }
+    });
+
+    showNextQuestion();
+  </script>
+</body>
+</html>
 
