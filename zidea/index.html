@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Z.IDEA - Inzerta</title>
   <style>
     body {
@@ -39,19 +39,30 @@
       margin-right: 10px;
       cursor: pointer;
     }
+    .alert {
+      background: #111;
+      border-left: 4px solid #00ff99;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
+  <div class="alert">
+    ⚠️ Para usar Z.IDEA necesitas una API Key de OpenAI GPT (GPT-3.5 o GPT-4). No se guarda, solo se usa en tu navegador.
+  </div>
+
   <div id="output"></div>
   <div class="input-group">
     <span>&gt;</span>
-    <input type="text" id="userInput" autocomplete="off">
+    <input type="text" id="userInput" autocomplete="off" />
   </div>
 
   <script>
     const output = document.getElementById('output');
     const input = document.getElementById('userInput');
-    
+    const apiKey = prompt("Pega tu clave secreta de OpenAI (GPT-4). No se guarda.");
+
     let step = 0;
     let answers = [];
 
@@ -61,8 +72,6 @@
       "¿Qué productos o servicios ofrecerás?",
       "¿Qué emoción quieres que transmita tu marca?"
     ];
-
-    const gumroadLink = "https://byinzerta.gumroad.com/l/etzudy";
 
     function printLine(text) {
       const line = document.createElement('div');
@@ -75,28 +84,51 @@
       if (step < questions.length) {
         printLine(questions[step]);
       } else {
-        generateResult();
+        generateWithOpenAI();
       }
     }
 
-    function generateResult() {
-      printLine("Procesando tu idea...");
-      setTimeout(() => {
-        printLine("\\nNombre sugerido: Nova Ritual");
-        printLine("Estilo visual: Oscuro, elegante, experimental");
-        printLine("Prompt IA: Editorial ultra realista con fondo abstracto, tipografía experimental y objetos flotando");
-        printLine("Caption: Esta marca aún no existe. Pero podría ser tuya.\\n");
+    async function generateWithOpenAI() {
+      printLine("Procesando con IA...");
+
+      const prompt = `
+Actúa como un experto en branding y marketing visual. Basado en esta idea:
+
+Tipo de marca: ${answers[0]}
+Estilo visual: ${answers[1]}
+Productos o servicios: ${answers[2]}
+Emoción a transmitir: ${answers[3]}
+
+Devuélveme un nombre de marca potente, una descripción creativa, un prompt para generar la imagen con IA (Midjourney), un caption para Instagram y una sugerencia de colores.
+`;
+
+      try {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "gpt-4",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.9
+          })
+        });
+
+        const data = await res.json();
+        const reply = data.choices[0].message.content;
+        printLine(reply);
 
         const button = document.createElement('button');
-        button.textContent = "Desbloquear tu marca completa";
-        button.onclick = () => window.open(gumroadLink, '_blank');
+        button.textContent = "Probar otra idea";
+        button.onclick = () => location.reload();
         document.body.appendChild(button);
 
-        const retryButton = document.createElement('button');
-        retryButton.textContent = "Probar otra idea";
-        retryButton.onclick = () => location.reload();
-        document.body.appendChild(retryButton);
-      }, 1000);
+      } catch (error) {
+        printLine("❌ Error al conectar con OpenAI.");
+        console.error(error);
+      }
     }
 
     input.addEventListener('keydown', (e) => {
@@ -115,4 +147,3 @@
   </script>
 </body>
 </html>
-
